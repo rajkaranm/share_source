@@ -5,43 +5,33 @@
   import { goto } from "$app/navigation";
   import axios from "axios";
 
+  import Post from "../../components/Post.svelte";
+
+
+  let posts;
+
   onMount(async () => {
     if (!$userData.email) {
       goto("/login");
-    } else {
-      axios.get("")
     }
+
+    function get_posts(){
+      axios.get("http://127.0.0.1:8000/get_posts", {params: {user_id: $userData.id}})
+      .then((res) => {
+        console.log(res)
+        posts = res.data;
+      }).catch((err) => {
+        console.log("Error in get_posts", err);
+      })
+    }
+    get_posts()
   });
 </script>
 
-<div>
-  {$userData.email}
-  <br />
-  {$userData.id}
-
-  <div class="max-w-sm rounded overflow-hidden shadow-lg">
-    <!-- <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains" /> -->
-    <div class="px-6 py-4">
-      <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
-      <p class="text-gray-700 text-base">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus
-        quia, nulla! Maiores et perferendis eaque, exercitationem praesentium
-        nihil.
-      </p>
-    </div>
-    <div class="px-6 pt-4 pb-2">
-      <span
-        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-        >#photography</span
-      >
-      <span
-        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-        >#travel</span
-      >
-      <span
-        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-        >#winter</span
-      >
-    </div>
-  </div>
+<div class="flex flex-col justify-center items-center mt-10">
+  {#if posts}
+    {#each posts as post}
+      <Post post={post}/>
+    {/each}
+  {/if}
 </div>
