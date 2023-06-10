@@ -6,7 +6,7 @@
   import axios from "axios";
 
   import Post from "../../components/Post.svelte";
-
+  import Footer from "../../components/Footer.svelte";
 
   let posts;
 
@@ -15,23 +15,30 @@
       goto("/login");
     }
 
-    function get_posts(){
-      axios.get("http://127.0.0.1:8000/get_posts", {params: {user_id: $userData.id}})
-      .then((res) => {
-        console.log(res)
-        posts = res.data;
-      }).catch((err) => {
-        console.log("Error in get_posts", err);
-      })
+    function get_posts() {
+      axios
+        .get("http://127.0.0.1:8000/get_posts", {
+          params: { user_id: $userData.id },
+        })
+        .then((res) => {
+          console.log(res);
+          posts = res.data;
+        })
+        .catch((err) => {
+          console.log("Error in get_posts", err);
+        });
     }
-    get_posts()
+    get_posts();
   });
 </script>
 
-<div class="flex flex-col justify-center items-center mt-10">
-  {#if posts}
-    {#each posts as post}
-      <Post post={post}/>
-    {/each}
-  {/if}
+<div class="w-screen flex flex-row justify-center flex-wrap mt-10">
+  <div class="w-1/3 mx-20">
+    {#if posts}
+      {#each posts as post}
+        <Post {post} />
+      {/each}
+    {/if}
+  </div>
+  <Footer />
 </div>

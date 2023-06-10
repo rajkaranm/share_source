@@ -39,6 +39,8 @@ class LoginData(BaseModel):
 class getPostData(BaseModel):
     user_id: str
 
+class searchQuery(BaseModel):
+    channel_name: str
 
 # PostgresSQL connection function --------------------
 def get_connection():
@@ -159,9 +161,23 @@ def get_posts(response: Response, user_id: int):
     cursor.close()
     return posts
 
-@app.post("/search/{name}")
-def search(name: str):
-    pass
+@app.get("/search")
+def search(query: str):
+    cursor = conn.cursor()
+    cursor.execute("select * from channels where name = %s;", (query,))
+
+    channel_found = cursor.fetchall()
+    if len(channel_found) == 0:
+        return {"flag": 0}
+        
+    channel_response = []
+    for channel in channel_found:
+        temp = {}
+        temp['channel_id'] = channel[0]
+        temp['channel_name'] = channel[1]
+        channel_response.append(temp)
+    cursor.close()
+    return channel_response
 
 
 @app.get("/cookie-and-object")

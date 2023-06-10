@@ -3,12 +3,19 @@
   import "../app.css";
   import { userData } from "./store.js";
 
+  let search = "";
+
   function handleSignOut() {
     userData.set({});
     goto("/login");
     console.log($userData);
   }
   console.log(userData.email);
+
+  function handleSubmit() {
+    goto(`/search?query=${search}`);
+  }
+
 </script>
 
 <nav class="bg-white border-gray-200 dark:bg-gray-900">
@@ -23,8 +30,9 @@
         placeholder="Search topic..."
         class="outline-none rounded-lg px-2 py-0.5"
         type="text"
+        bind:value={search}
       />
-      <button class="m-1">
+      <button class="m-1" on:click={handleSubmit} >
         <svg
           aria-hidden="true"
           class="w-5 h-5 text-gray-500 dark:text-gray-400"

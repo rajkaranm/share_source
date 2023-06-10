@@ -1,1 +1,2 @@
-# Share Source is social media to discuss topics and share resouces.
+# ShareSource 
+It is place to discuss topic, share resouces and learn with others.
