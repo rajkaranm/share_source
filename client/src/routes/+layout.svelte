@@ -20,11 +20,11 @@
       class="flex flex-row justify-center items-center bg-white rounded-lg p-0.5"
     >
       <input
-        placeholder="search topic..."
+        placeholder="Search topic..."
         class="outline-none rounded-lg px-2 py-0.5"
         type="text"
       />
-      <button>
+      <button class="m-1">
         <svg
           aria-hidden="true"
           class="w-5 h-5 text-gray-500 dark:text-gray-400"

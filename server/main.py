@@ -70,7 +70,7 @@ app.add_middleware(
     allow_headers=["Access-Control-Allow-Headers", 'Content-Type', 'Authorization', 'Access-Control-Allow-Origin'],
 )
 
-
+# Routes ---------------------
 @app.get("/")
 async def root():
     cursor = conn.cursor()
@@ -135,16 +135,33 @@ async def register(response: Response , data: LoginData):
         }
         encoded_jwt = jwt.encode(payload=payload, key=JWT_SECRET , algorithm="HS256")
         response.set_cookie(key="JWT_TOKEN", value=encoded_jwt, httponly=True, secure=True, samesite='none')
-        response.set_cookie(key="fakesession", value="fake-cookie-session-value", httponly=True, secure=True, samesite='none')
+        response.set_cookie(key="fakesession", value="fake-cookie-session-value", httponly=True, secure=True, samesite='none', )
         
         return user_data
 
     return {"error": "Wrong Password!", "flag": 1}
 
 @app.get("/get_posts")
-def get_posts(response: Response, data: getPostData):
+def get_posts(response: Response, user_id: int):
+    print(user_id)
     cursor = conn.cursor()
-    cursor.execute('')
+    cursor.execute('select posts.id, posts.message, posts.created_at, channels.name from posts join channels on posts.channel_id = channels.id  where channel_id in (select user_channels.channel_id from users join user_channels on users.id = user_channels.user_id where users.id = %s);', (user_id,))
+    posts = []
+    # print(cursor.fetchall())
+    for post in cursor.fetchall():
+        temp = {}
+        temp['id'] = post[0]
+        temp['content'] = post[1]
+        temp['date'] = post[2]
+        temp['channel'] = post[3]
+        posts.append(temp)
+    print(posts)
+    cursor.close()
+    return posts
+
+@app.post("/search/{name}")
+def search(name: str):
+    pass
 
 
 @app.get("/cookie-and-object")

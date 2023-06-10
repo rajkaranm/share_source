@@ -27,7 +27,5 @@
 
 </script>
 
-<h1 class="text-3xl font-bold underline">Hello world!</h1>
-<button on:click={incrementCount}>
-  Clicked {count}
-</button>
+<h1 class="text-3xl font-bold mt-10 text-center">Welcome to Share Source</h1>
+<p class="text-center" >Explore, Learn and Interact.</p>
