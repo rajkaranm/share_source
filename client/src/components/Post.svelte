@@ -10,7 +10,8 @@
       {post.channel} -  {moment(post.date).startOf("ss").fromNow()} 
       <!-- {post.date.slice(0, 10)} -->
     </p>
-    <div class="font-bold text-xl mb-2">{post.content}</div>
+    <div class="font-bold text-xl mb-2">{post.title}</div>
+    <div class="text-lg mb-2">{post.content}</div>
     <div class="flex flex-row justify-between">
       <button on:click={() => console.log("Comment")}>
         <svg

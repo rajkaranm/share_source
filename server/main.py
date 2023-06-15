@@ -147,15 +147,18 @@ async def register(response: Response , data: LoginData):
 def get_posts(response: Response, user_id: int):
     print(user_id)
     cursor = conn.cursor()
-    cursor.execute('select posts.id, posts.message, posts.created_at, channels.name from posts join channels on posts.channel_id = channels.id  where channel_id in (select user_channels.channel_id from users join user_channels on users.id = user_channels.user_id where users.id = %s);', (user_id,))
+    cursor.execute('select posts.id, posts.message, posts.created_at, posts.title, channels.name from posts join channels on posts.channel_id = channels.id  where channel_id in (select user_channels.channel_id from users join user_channels on users.id = user_channels.user_id where users.id = %s);', (user_id,))
+    fetched_data = cursor.fetchall()
+    print(fetched_data)
     posts = []
     # print(cursor.fetchall())
-    for post in cursor.fetchall():
+    for post in fetched_data:
         temp = {}
         temp['id'] = post[0]
         temp['content'] = post[1]
         temp['date'] = post[2]
-        temp['channel'] = post[3]
+        temp['title'] = post[3]
+        temp['channel'] = post[4]
         posts.append(temp)
     print(posts)
     cursor.close()
