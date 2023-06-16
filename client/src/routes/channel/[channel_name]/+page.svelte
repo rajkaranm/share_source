@@ -31,7 +31,7 @@
     <h1 class="text-3xl font-bold">{$page.params.channel_name}</h1>
   </div>
   <h1 class="text-2xl mt-10">All Posts</h1>
-  <div class="w-1/3">
+  <div class="w-1/3 mt-5">
     {#if channel_data}
       {#each posts as post}
         <Post {post} />
