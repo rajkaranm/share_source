@@ -1,17 +1,19 @@
 <script>
   export let post;
   import moment from "moment";
+
+  import {capitalizeFirstLetter} from "../utils/utils"
 </script>
 
-<div class="w-full flex flex-col rounded shadow-lg mb-5">
+<div class="w-full flex flex-col border bg-white rounded mb-5">
   <!-- <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains" /> -->
   <div class="px-6 py-4">
     <p class="text-gray-700 text-base">
-      {post.channel} -  {moment(post.date).startOf("ss").fromNow()} 
+      {capitalizeFirstLetter(post.channel)}  -  {moment(post.date).startOf("ss").fromNow()} 
       <!-- {post.date.slice(0, 10)} -->
     </p>
-    <div class="font-bold text-xl mb-2">{post.title}</div>
-    <div class="text-lg mb-2">{post.content}</div>
+    <div class="font-bold text-xl mb-2">{capitalizeFirstLetter(post.title)}</div>
+    <div class="text-lg mb-2">{capitalizeFirstLetter(post.content)}</div>
     <div class="flex flex-row justify-between">
       <button on:click={() => console.log("Comment")}>
         <svg

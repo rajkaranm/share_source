@@ -183,6 +183,33 @@ def search(query: str):
     return channel_response
 
 
+@app.get("/get_channel")
+def create_cookie(channel_name: str):
+    cursor = conn.cursor()
+    cursor.execute("select * from posts join channels on channels.id = posts.channel_id where channels.name = %s;", (channel_name,))
+
+    channel_found = cursor.fetchall()
+    if len(channel_found) == 0:
+        return {"flag": 0}
+        
+    all_post = []
+    channel_data = {"channel_name": channel_found[0][-1], "channel_id": channel_found[0][-2]}
+    for channel in channel_found:
+        temp = {}
+        temp['channel_id'] = channel[0]
+        temp['channel'] = channel[-1]
+        temp['content'] = channel[3]
+        temp['title'] = channel[5]
+        temp['date'] = channel[4]
+        all_post.append(temp)
+    channel_data['posts'] = all_post
+
+    cursor.close()
+    return channel_data
+
+
+
+
 @app.get("/cookie-and-object")
 def create_cookie(response: Response):
     response.set_cookie(key="fakesession", value="fake-cookie-session-value")
