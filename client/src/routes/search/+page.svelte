@@ -2,6 +2,10 @@
   import { page } from "$app/stores";
   import axios from "axios";
   import { onMount } from "svelte";
+
+  import { userData } from "../store.js";
+  import { capitalizeFirstLetter } from "../../utils/utils.js";
+
   $: query = $page.url.searchParams.get("query");
   $: console.log(query)
   let searchResult = [];
@@ -36,12 +40,20 @@
     {#if searchResult}
       {#each searchResult as query}
         <p class="text-xl">
-          <a href="/channel/{query.channel_name}">{query.channel_name}</a>
+          <a href="/channel/{query.channel_name}">{ capitalizeFirstLetter(query.channel_name)}</a>
         </p>
+        {#if $userData.channels.find(channels => channels.channel_id === query.channel_id)}
+        <button
+          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          >Leave</button
+        >
+        {:else}
         <button
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >Join</button
         >
+
+        {/if}
       {/each}
     {/if}
     {#if flag == 1}

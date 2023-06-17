@@ -122,6 +122,9 @@ async def register(response: Response , data: LoginData):
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE email = (%s)", (data.email,))
     user_data = cursor.fetchone()
+    cursor.execute("select channels.id, channels.name from user_channels join channels on user_channels.channel_id = channels.id where user_channels.user_id = %s;", (user_data[0],))
+    user_channels = cursor.fetchall()
+    print(user_channels)
 
     if (data.password == user_data[3]):
         payload = {
@@ -134,7 +137,10 @@ async def register(response: Response , data: LoginData):
             "id": user_data[0],
             "name": user_data[1],
             "email": user_data[2],
+            "channels": []
         }
+        for channel in user_channels:
+            user_data['channels'].append({'channel_id': channel[0], 'channel_name': channel[1]})
         encoded_jwt = jwt.encode(payload=payload, key=JWT_SECRET , algorithm="HS256")
         response.set_cookie(key="JWT_TOKEN", value=encoded_jwt, httponly=True, secure=True, samesite='none')
         response.set_cookie(key="fakesession", value="fake-cookie-session-value", httponly=True, secure=True, samesite='none', )
@@ -149,7 +155,7 @@ def get_posts(response: Response, user_id: int):
     cursor = conn.cursor()
     cursor.execute('select posts.id, posts.message, posts.created_at, posts.title, channels.name from posts join channels on posts.channel_id = channels.id  where channel_id in (select user_channels.channel_id from users join user_channels on users.id = user_channels.user_id where users.id = %s);', (user_id,))
     fetched_data = cursor.fetchall()
-    print(fetched_data)
+    # print(fetched_data)
     posts = []
     # print(cursor.fetchall())
     for post in fetched_data:
@@ -160,7 +166,7 @@ def get_posts(response: Response, user_id: int):
         temp['title'] = post[3]
         temp['channel'] = post[4]
         posts.append(temp)
-    print(posts)
+    # print(posts)
     cursor.close()
     return posts
 
@@ -184,7 +190,7 @@ def search(query: str):
 
 
 @app.get("/get_channel")
-def create_cookie(channel_name: str):
+def get_channel(channel_name: str):
     cursor = conn.cursor()
     cursor.execute("select * from posts join channels on channels.id = posts.channel_id where channels.name = %s;", (channel_name,))
 
@@ -206,7 +212,6 @@ def create_cookie(channel_name: str):
 
     cursor.close()
     return channel_data
-
 
 
 

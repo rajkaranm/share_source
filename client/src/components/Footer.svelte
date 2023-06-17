@@ -1,8 +1,5 @@
-<div class="w-60">
-  <div class="flex flex-row flex-wrap border-2 p-1">
-    <p class="m-1">Terms of Service</p>
-    <p class="m-1">Privacy Policy</p>
-    <p class="m-1">Cookie Policy</p>
-    <p class="m-1">Accessibility</p>
+<div class="w-60 mt-10">
+  <div class="flex flex-row flex-wrap p-1">
+    <p>Made with 💜 by Rajkaran</p>
   </div>
 </div>

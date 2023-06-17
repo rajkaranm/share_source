@@ -7,6 +7,7 @@
 
   import Post from "../../components/Post.svelte";
   import Footer from "../../components/Footer.svelte";
+  import ChannelList from "../../components/ChannelList.svelte";
 
   let posts;
 
@@ -40,5 +41,8 @@
       {/each}
     {/if}
   </div>
-  <Footer />
+  <div class="flex flex-col">
+    <ChannelList />
+    <Footer />
+  </div>
 </div>
