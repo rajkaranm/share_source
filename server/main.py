@@ -42,6 +42,10 @@ class getPostData(BaseModel):
 class searchQuery(BaseModel):
     channel_name: str
 
+class JoinChannel(BaseModel):
+    channel_id: int
+    user_id: int
+
 # PostgresSQL connection function --------------------
 def get_connection():
     try:
@@ -153,7 +157,7 @@ async def register(response: Response , data: LoginData):
 def get_posts(response: Response, user_id: int):
     print(user_id)
     cursor = conn.cursor()
-    cursor.execute('select posts.id, posts.message, posts.created_at, posts.title, channels.name from posts join channels on posts.channel_id = channels.id  where channel_id in (select user_channels.channel_id from users join user_channels on users.id = user_channels.user_id where users.id = %s);', (user_id,))
+    cursor.execute('select posts.id, posts.message, posts.created_at, posts.title, channels.name from posts join channels on posts.channel_id = channels.id  where channel_id in (select user_channels.channel_id from users join user_channels on users.id = user_channels.user_id where users.id = %s) order by posts.created_at DESC;', (user_id,))
     fetched_data = cursor.fetchall()
     # print(fetched_data)
     posts = []
@@ -213,6 +217,18 @@ def get_channel(channel_name: str):
     cursor.close()
     return channel_data
 
+
+
+@app.post("/join_channel")
+def join_channel(response: Response, data: JoinChannel):
+    cursor = conn.cursor()
+    cursor.execute("insert into user_channels(user_id, channel_id) values(%s, %s);", (data.user_id, data.channel_id))
+    if cursor.rowcount == 1:
+        conn.commit()
+        cursor.close()
+        return {'flag': 1}
+    cursor.close()
+    return {'flag': 0}
 
 
 @app.get("/cookie-and-object")

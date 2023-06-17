@@ -7,6 +7,8 @@
 
   import { userData } from "../../store.js";
 
+  import { joinChannel } from "../../../utils/utils"
+
   let channel_data;
   let posts;
 
@@ -42,7 +44,7 @@
           >Leave</button
         >
       {:else}
-        <button
+        <button on:click={() => joinChannel($userData.id, channel_data.channel_id)}
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >Join</button
         >
