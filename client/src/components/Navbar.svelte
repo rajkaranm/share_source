@@ -3,13 +3,16 @@
   import {userData} from "../routes/store.js"
 
   let search = "";
+  let user;
+
+  userData.subscribe((data) => {
+    user = data;
+  })
 
   function handleSignOut() {
-    userData.set({});
+    userData.set({})
     goto("/login");
-    console.log($userData);
   }
-  console.log(userData.email);
 
   function handleSubmit() {
     goto(`/search?query=${search}`);
@@ -50,7 +53,7 @@
 
     <div class="w-2/12">
       <ul class="">
-        {#if !$userData.email}
+        {#if !user.email}
           <li><a class="text-white" href="/login">login</a></li>
         {:else}
           <li class="flex flex-row justify-around">

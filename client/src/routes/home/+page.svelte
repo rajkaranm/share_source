@@ -9,17 +9,26 @@
   import Footer from "../../components/Footer.svelte";
   import ChannelList from "../../components/ChannelList.svelte";
 
-  let posts;
 
+  let posts;
+  let user;
+
+  $: posts, user
+
+  userData.subscribe((data) => user = data);
+
+  if (!user) {
+    goto('/login')
+  }
   onMount(async () => {
-    if (!$userData.email) {
+    if (!user.email) {
       goto("/login");
     }
 
     function get_posts() {
       axios
         .get("http://127.0.0.1:8000/get_posts", {
-          params: { user_id: $userData.id },
+          params: { user_id: user.id },
         })
         .then((res) => {
           console.log(res);

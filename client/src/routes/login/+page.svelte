@@ -22,7 +22,7 @@
       if (res.data.flag == 1){
         return alert("Wrong Password")
       }
-      userData.update((value) => value = res.data);
+      userData.set(res.data)
       goto("/home")
     })
 
