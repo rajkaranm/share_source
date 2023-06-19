@@ -2,19 +2,6 @@
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
 
-  let count = 0;
-
-  $: if (count >= 10) {
-    alert("Count is high");
-    count = 1;
-  }
-
-  $: console.log("Count changed ", count);
-
-  function incrementCount() {
-    count += 1;
-  }
-
   // let user = false;
   // onMount(async () => {
   //   function checkIfUserLoggedInOrNot() {

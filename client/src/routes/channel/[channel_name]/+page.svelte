@@ -41,15 +41,15 @@
         {capitalizeFirstLetter(channel_data.channel_name)}
       </h1>
 
-      {#if user.channel}
-        {#if $userData.channels.find((channels) => channels.channel_id === channel_data.channel_id)}
+      {#if user.email}
+        {#if user.channels.find((channels) => channels.channel_id === channel_data.channel_id)}
           <button
             class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
             >Leave</button
           >
         {:else}
           <button
-            on:click={() => joinChannel($userData.id, channel_data.channel_id)}
+            on:click={() => joinChannel(user.id, channel_data.channel_id)}
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >Join</button
           >
