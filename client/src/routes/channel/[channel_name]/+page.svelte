@@ -12,6 +12,7 @@
   let channel_data;
   let posts;
 
+
   onMount(async () => {
     function get_channel_data() {
       axios
@@ -35,11 +36,11 @@
   <div class="mt-10 w-1/3 flex flex-row justify-evenly items-center">
     {#if channel_data?.channel_name}
       <h1 class="text-3xl font-bold">
-        {capitalizeFirstLetter(channel_data.channel_name)}
+        {capitalizeFirstLetter(channel_data?.channel_name)}
       </h1>
 
       {#if $userData.email}
-        {#if $userData.channels.find((channels) => channels.channel_id === channel_data.channel_id)}
+        {#if $userData.channels.find((channels) => channels.channel_id === channel_data?.channel_id)}
           <button
             on:click={() => leaveChannel($userData.id, channel_data.channel_id)}
             class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
@@ -57,7 +58,7 @@
   </div>
   <h1 class="text-2xl mt-10">All Posts</h1>
   <div class="w-1/3 mt-5">
-    {#if channel_data}
+    {#if posts}
       {#each posts as post}
         <Post {post} />
       {/each}

@@ -13,6 +13,15 @@
   let posts;
 
 
+  function get_user(user_id) {
+    axios.get("http://127.0.0.1:8000/get_user", {params: {user_id}})
+    .then((res) => {
+      userData.update((data) => data = res.data)
+    })
+  }
+  get_user($userData.id)
+
+
 
   if (!$userData.email) {
     goto('/login')
