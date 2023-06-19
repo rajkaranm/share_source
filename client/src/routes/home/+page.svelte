@@ -11,24 +11,21 @@
 
 
   let posts;
-  let user;
 
-  $: posts, user
 
-  userData.subscribe((data) => user = data);
 
-  if (!user) {
+  if (!$userData.email) {
     goto('/login')
   }
   onMount(async () => {
-    if (!user.email) {
+    if (!$userData.email) {
       goto("/login");
     }
 
     function get_posts() {
       axios
         .get("http://127.0.0.1:8000/get_posts", {
-          params: { user_id: user.id },
+          params: { user_id: $userData.id },
         })
         .then((res) => {
           console.log(res);

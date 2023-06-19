@@ -3,11 +3,7 @@
   import {userData} from "../routes/store.js"
 
   let search = "";
-  let user;
 
-  userData.subscribe((data) => {
-    user = data;
-  })
 
   function handleSignOut() {
     userData.set({})
@@ -53,7 +49,7 @@
 
     <div class="w-2/12">
       <ul class="">
-        {#if !user.email}
+        {#if !$userData.email}
           <li><a class="text-white" href="/login">login</a></li>
         {:else}
           <li class="flex flex-row justify-around">

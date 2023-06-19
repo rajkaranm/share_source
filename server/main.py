@@ -46,6 +46,10 @@ class JoinChannel(BaseModel):
     channel_id: int
     user_id: int
 
+class LeaveChannel(BaseModel):
+    channel_id: int
+    user_id: int
+
 # PostgresSQL connection function --------------------
 def get_connection():
     try:
@@ -223,6 +227,17 @@ def get_channel(channel_name: str):
 def join_channel(response: Response, data: JoinChannel):
     cursor = conn.cursor()
     cursor.execute("insert into user_channels(user_id, channel_id) values(%s, %s);", (data.user_id, data.channel_id))
+    if cursor.rowcount == 1:
+        conn.commit()
+        cursor.close()
+        return {'flag': 1}
+    cursor.close()
+    return {'flag': 0}
+
+@app.post("/leave_channel")
+def leave_channel(response: Response, data: JoinChannel):
+    cursor = conn.cursor()
+    cursor.execute("delete from user_channels where user_id = %s and channel_id = %s;", (data.user_id, data.channel_id))
     if cursor.rowcount == 1:
         conn.commit()
         cursor.close()
