@@ -8,24 +8,16 @@
   import Post from "../../components/Post.svelte";
   import Footer from "../../components/Footer.svelte";
   import ChannelList from "../../components/ChannelList.svelte";
-
-
-  let posts;
-
-
-  function get_user(user_id) {
-    axios.get("http://127.0.0.1:8000/get_user", {params: {user_id}})
-    .then((res) => {
-      userData.update((data) => data = res.data)
-    })
-  }
-  get_user($userData.id)
-
+  import { getUser } from "../../utils/utils.js";
 
 
   if (!$userData.email) {
     goto('/login')
   }
+  
+  let posts;
+  getUser($userData.id, userData)
+
   onMount(async () => {
     if (!$userData.email) {
       goto("/login");

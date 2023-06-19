@@ -9,7 +9,8 @@
   <!-- <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains" /> -->
   <div class="px-6 py-4">
     <p class="text-gray-700 text-base">
-      {capitalizeFirstLetter(post.channel)}  -  {moment(post.date).startOf("ss").fromNow()} 
+      <a href={`/channel/${post.channel}`}>{capitalizeFirstLetter(post.channel)}</a>
+        -  {moment(post.date).startOf("ss").fromNow()} 
       <!-- {post.date.slice(0, 10)} -->
     </p>
     <div class="font-bold text-xl mb-2">{capitalizeFirstLetter(post.title)}</div>
