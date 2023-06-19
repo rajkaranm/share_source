@@ -7,10 +7,13 @@
 
   import { userData } from "../../store.js";
 
-  import { joinChannel } from "../../../utils/utils"
+  import { joinChannel } from "../../../utils/utils";
 
   let channel_data;
   let posts;
+  let user;
+
+  userData.subscribe((data) => (user = data));
 
   onMount(async () => {
     function get_channel_data() {
@@ -38,16 +41,19 @@
         {capitalizeFirstLetter(channel_data.channel_name)}
       </h1>
 
-      {#if $userData.channels.find((channels) => channels.channel_id === channel_data.channel_id)}
-        <button
-          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-          >Leave</button
-        >
-      {:else}
-        <button on:click={() => joinChannel($userData.id, channel_data.channel_id)}
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >Join</button
-        >
+      {#if user.channel}
+        {#if $userData.channels.find((channels) => channels.channel_id === channel_data.channel_id)}
+          <button
+            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >Leave</button
+          >
+        {:else}
+          <button
+            on:click={() => joinChannel($userData.id, channel_data.channel_id)}
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >Join</button
+          >
+        {/if}
       {/if}
     {/if}
   </div>
