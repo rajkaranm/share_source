@@ -197,6 +197,28 @@ def search(query: str):
     return channel_response
 
 
+@app.get("/get_user")
+def get_posts(response: Response, user_id: int):
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users WHERE id = (%s)", (user_id,))
+    user_data = cursor.fetchone()
+    cursor.execute("select channels.id, channels.name from user_channels join channels on user_channels.channel_id = channels.id where user_channels.user_id = %s;", (user_data[0],))
+    user_channels = cursor.fetchall()
+
+    user_data = {
+        "id": user_data[0],
+        "name": user_data[1],
+        "email": user_data[2],
+        "channels": []
+    }
+    for channel in user_channels:
+        user_data['channels'].append({'channel_id': channel[0], 'channel_name': channel[1]})
+    
+    return user_data
+
+
+
+
 @app.get("/get_channel")
 def get_channel(channel_name: str):
     cursor = conn.cursor()
@@ -220,6 +242,7 @@ def get_channel(channel_name: str):
 
     cursor.close()
     return channel_data
+
 
 
 

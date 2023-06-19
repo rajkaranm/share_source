@@ -7,7 +7,7 @@
 
   import { userData } from "../../store.js";
 
-  import { joinChannel } from "../../../utils/utils";
+  import { joinChannel, leaveChannel } from "../../../utils/utils";
 
   let channel_data;
   let posts;
@@ -41,6 +41,7 @@
       {#if $userData.email}
         {#if $userData.channels.find((channels) => channels.channel_id === channel_data.channel_id)}
           <button
+            on:click={() => leaveChannel($userData.id, channel_data.channel_id)}
             class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
             >Leave</button
           >

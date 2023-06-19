@@ -16,3 +16,16 @@ export function joinChannel(user_id, channel_id) {
         return false
     })   
 }
+
+export function leaveChannel(user_id, channel_id) {
+    axios.post("http://127.0.0.1:8000/leave_channel", {user_id, channel_id})
+    .then((res) => {
+        if (res.ok){
+            return true
+        }
+    }) 
+    .catch((error) => {
+        console.log(error)
+        return false
+    })   
+}
