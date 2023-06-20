@@ -50,6 +50,12 @@ class LeaveChannel(BaseModel):
     channel_id: int
     user_id: int
 
+class AddPostData(BaseModel):
+    user_id: int
+    channel_id: int
+    message: str
+    title: str
+
 # PostgresSQL connection function --------------------
 def get_connection():
     try:
@@ -267,6 +273,20 @@ def leave_channel(response: Response, data: JoinChannel):
         return {'flag': 1}
     cursor.close()
     return {'flag': 0}
+
+
+
+@app.post("/add_post")
+def add_post(response: Response, data: AddPostData):
+    cursor = conn.cursor()
+    cursor.execute("insert into posts(user_id, channel_id, message, title) values(%s, %s, %s, %s);", (data.user_id, data.channel_id, data.message, data.title))
+    if cursor.rowcount == 1:
+        conn.commit()
+        cursor.close()
+        return {'flag': 1}
+    cursor.close()
+    return {'flag': 0}
+
 
 
 @app.get("/cookie-and-object")
