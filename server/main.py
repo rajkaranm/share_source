@@ -228,7 +228,7 @@ def get_posts(response: Response, user_id: int):
 @app.get("/get_channel")
 def get_channel(channel_name: str):
     cursor = conn.cursor()
-    cursor.execute("select * from posts join channels on channels.id = posts.channel_id where channels.name = %s;", (channel_name,))
+    cursor.execute("select * from posts join channels on channels.id = posts.channel_id where channels.name = %s order by created_at DESC;", (channel_name,))
 
     channel_found = cursor.fetchall()
     if len(channel_found) == 0:

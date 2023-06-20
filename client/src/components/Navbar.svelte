@@ -21,7 +21,7 @@
       <h1 class="text-white">Share Source</h1>
     </a>
     <div
-      class="flex flex-row justify-center items-center bg-white rounded-lg p-0.5"
+      class="flex flex-row justify-center items-center bg-white rounded-2xl p-0.5"
     >
       <input
         placeholder="Search topic..."

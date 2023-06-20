@@ -12,32 +12,53 @@
   let channel_data;
   let posts;
 
+  let title;
+  let content;
+
   function handleLeaveSubmit() {
-    leaveChannel($userData.id, channel_data.channel_id)
-    getUser($userData.id, userData)
+    leaveChannel($userData.id, channel_data.channel_id);
+    getUser($userData.id, userData);
   }
 
   function handleJoinSubmit() {
-    joinChannel($userData.id, channel_data.channel_id)
-    getUser($userData.id, userData)
+    joinChannel($userData.id, channel_data.channel_id);
+    getUser($userData.id, userData);
   }
 
+  function addPost() {
+    axios
+      .post("http://127.0.0.1:8000/add_post", {
+        user_id: $userData.id,
+        channel_id: channel_data.channel_id,
+        message: content,
+        title: title,
+      })
+      .then((res) => {
+        if (res.data.flag === 1) {
+          console.log(res.data);
+          get_channel_data()
+          alert("Post Added!")
+          title = ""
+          content = ""
+        }
+      });
+  }
+  function get_channel_data() {
+    axios
+      .get("http://127.0.0.1:8000/get_channel", {
+        params: { channel_name: $page.params.channel_name },
+      })
+      .then((res) => {
+        console.log(res.data.channel_name);
+        channel_data = res.data;
+        posts = channel_data.posts;
+      })
+      .catch((err) => {
+        console.log("Error in get_posts", err);
+      });
+  }
 
   onMount(async () => {
-    function get_channel_data() {
-      axios
-        .get("http://127.0.0.1:8000/get_channel", {
-          params: { channel_name: $page.params.channel_name },
-        })
-        .then((res) => {
-          console.log(res.data.channel_name);
-          channel_data = res.data;
-          posts = channel_data.posts;
-        })
-        .catch((err) => {
-          console.log("Error in get_posts", err);
-        });
-    }
     get_channel_data();
   });
 </script>
@@ -68,6 +89,27 @@
   </div>
   <h1 class="text-2xl mt-10">All Posts</h1>
   <div class="w-1/3 mt-5">
+    <div class="flex flex-col my-5 p-5 bg-white border">
+      <label for="">Title</label>
+      <input
+        bind:value={title}
+        class="border rounded outline-none"
+        type="text"
+      />
+      <label for="">Content</label>
+      <textarea
+        bind:value={content}
+        class="h-32 border rounded outline-none"
+        name=""
+        id=""
+        cols="30"
+        rows="10"
+      />
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3"
+        on:click={addPost}>Post</button
+      >
+    </div>
     {#if posts}
       {#each posts as post}
         <Post {post} />
