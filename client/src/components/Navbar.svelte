@@ -1,17 +1,21 @@
 <script>
   import { goto } from "$app/navigation";
-  import {userData} from "../routes/store.js"
+  import { userData, searchResult } from "../routes/store";
+  import { getSearchQuery } from "../utils/utils";
 
   let search = "";
 
-
   function handleSignOut() {
-    userData.set({})
+    userData.set({});
     goto("/login");
   }
 
   function handleSubmit() {
-    goto(`/search?query=${search}`);
+    if (search.length > 0) {
+      goto(`/search?query=${search}`);
+      getSearchQuery(search, searchResult);
+      console.log($searchResult);
+    }
   }
 </script>
 

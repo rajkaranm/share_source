@@ -39,3 +39,12 @@ export function getUser(user_id, userData) {
       userData.update((data) => (data = res.data));
     });
 }
+
+export function getSearchQuery(query, searchResult) {
+  axios
+    .get("http://127.0.0.1:8000/search", { params: { query } })
+    .then((res) => {
+      console.log("search", res.data);
+      searchResult.set(res.data)
+    });
+}
