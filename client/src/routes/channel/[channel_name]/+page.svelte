@@ -36,10 +36,10 @@
       .then((res) => {
         if (res.data.flag === 1) {
           console.log(res.data);
-          get_channel_data()
-          alert("Post Added!")
-          title = ""
-          content = ""
+          get_channel_data();
+          alert("Post Added!");
+          title = "";
+          content = "";
         }
       });
   }
@@ -89,27 +89,29 @@
   </div>
   <h1 class="text-2xl mt-10">All Posts</h1>
   <div class="w-1/3 mt-5">
-    <div class="flex flex-col my-5 p-5 bg-white border">
-      <label for="">Title</label>
-      <input
-        bind:value={title}
-        class="border rounded outline-none"
-        type="text"
-      />
-      <label for="">Content</label>
-      <textarea
-        bind:value={content}
-        class="h-32 border rounded outline-none"
-        name=""
-        id=""
-        cols="30"
-        rows="10"
-      />
-      <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3"
-        on:click={addPost}>Post</button
-      >
-    </div>
+    {#if $userData.email}
+      <div class="flex flex-col my-5 p-5 bg-white border">
+        <label for="">Title</label>
+        <input
+          bind:value={title}
+          class="border rounded outline-none"
+          type="text"
+        />
+        <label for="">Content</label>
+        <textarea
+          bind:value={content}
+          class="h-32 border rounded outline-none"
+          name=""
+          id=""
+          cols="30"
+          rows="10"
+        />
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3"
+          on:click={addPost}>Post</button
+        >
+      </div>
+    {/if}
     {#if posts}
       {#each posts as post}
         <Post {post} />
