@@ -5,8 +5,17 @@
   import MdDelete from "svelte-icons/md/MdDelete.svelte";
   import GiSaveArrow from "svelte-icons/gi/GiSaveArrow.svelte";
   import MdShare from "svelte-icons/md/MdShare.svelte";
-
+  import { userData, feeds } from "../routes/store"
+  import { deletePost, get_posts } from "../utils/utils";
+  
   let option = false;
+
+  function handleDelete() {
+    deletePost(post.id)
+    get_posts($userData.id, feeds)
+    option = false;
+  }
+
 </script>
 
 <div class="mb-5 relative">
@@ -56,7 +65,9 @@
     <div
       class="w-28 absolute left-[28rem] bottom-10 flex flex-col justify-center p-1 bg-white border transition"
     >
-      <button class="flex p-2"> <div class="w-6 h-6"><MdDelete /> </div>  Delete</button>
+      {#if $userData.post_ids.find((id) => id === post.id)}
+      <button on:click={handleDelete} class="flex p-1"> <div class="w-6 h-6"><MdDelete /> </div>  Delete</button>
+      {/if}
       <button class="flex p-2"> <div class="w-6 h-6"><GiSaveArrow /> </div>  Save</button>
       <button class="flex p-2"> <div class="w-6 h-6"> <MdShare /> </div>  Share</button>
 
