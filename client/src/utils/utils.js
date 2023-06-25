@@ -72,3 +72,13 @@ export function get_posts(user_id, feeds) {
       console.log("Error in get_posts", err);
     });
 }
+
+export function getPostWithComment(post_id, postCommentData) {
+  axios
+    .get("http://127.0.0.1:8000/get_post_with_comment", {
+      params: { post_id: post_id },
+    })
+    .then((res) => {
+      postCommentData.set(res.data);
+    });
+}
